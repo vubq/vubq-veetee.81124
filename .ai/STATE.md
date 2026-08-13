@@ -4,11 +4,11 @@ Updated: 2026-08-14
 
 ## Current objective
 
-Implement TASK-004 PostgreSQL schemas and reversible migrations for the data and security foundations required by bootstrap, pairing, device identity, providers, pipelines, sessions, MCP, audit, and outbox workflows.
+Land the verified TASK-004 PostgreSQL foundation and implement TASK-041 migration-owner/runtime-role separation before any control-API database integration.
 
 ## Current phase
 
-The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc`; `origin/main` matched the local commit, CI run `31696474159` succeeded, and Dependency Graph run `31696474740` succeeded. The CI action-runtime maintenance checkpoint was merged as `10dd483d6cac91e74fde784924f31143d15c6c5f` and its post-merge CI run `31697317751` succeeded without the deprecated Node.js 20 runtime warning. TASK-004 implementation is now active on `feat/task-004-database-foundation`.
+The architect-approved TASK-003 baseline and CI action-runtime maintenance are merged on `main`. TASK-004 is committed as `dbd9d74ea5fb4a9f8775db62b1dcb67c8c828d24`, pushed on `feat/task-004-database-foundation`, and published as PR #2. Both required CI jobs—`verify` and `PostgreSQL 17 integration`—passed. The next implementation gate is TASK-041 migration-owner/runtime-role separation; authentication and bootstrap database integration remain blocked until it is complete.
 
 ## Completed task scope
 
@@ -64,14 +64,14 @@ Final narrow remediation verification passed on 2026-08-13.
 - Drizzle declarations and schema contract tests are reconciled with all six migrations. Procedural triggers/functions remain authoritative in the migration SQL and are covered by focused migration contracts and the live verifier.
 - TASK-040 verification is green locally: `npm run db:check`, all 33 database tests against temporary PostgreSQL 17.11, compiled `npm run db:verify`, dedicated `npm run test:integration:postgres`, full `npm run check`, and `git diff --check` all pass.
 - The final architect review found one Drizzle/migration mismatch: `mcp_calls.attempt_count` existed only in the Drizzle declaration. The redundant declaration, checks, and contract expectation were removed; `attempt` remains authoritative. The focused re-review then returned `VERDICT: APPROVE` with no remaining release blockers.
-- TASK-004 has not been applied to any known shared database. Local review and verification are complete; feature-branch publication and the pinned PostgreSQL 17 CI job are the remaining release checkpoint.
+- TASK-004 has not been applied to any known shared database. Commit `dbd9d74ea5fb4a9f8775db62b1dcb67c8c828d24` was pushed and published as PR #2; both standard verification and pinned PostgreSQL 17 integration CI passed.
 
 ## TASK-004 live verification evidence
 
 - Temporary unprivileged PostgreSQL 16.14 and PostgreSQL 17.11 clusters were initialized under `$CLAUDE_JOB_DIR/tmp` and exposed only through job-local Unix sockets plus local ports `55432` and `55433`.
 - The first remediation pass passed `db:verify` and the dedicated integration test on both PostgreSQL 16.14 and 17.11.
 - After TASK-036 through TASK-040 integration and the final Drizzle reconciliation, PostgreSQL 17.11 passed all 33 database tests, including concurrent pairing/MCP decisions, digest-only firmware tickets, immutable credential/key/revision records, full migration rollback, schema cleanup, and reapply.
-- The final compiled `npm run db:verify` and `npm run test:integration:postgres` both passed against PostgreSQL 17.11. The pinned PostgreSQL 17 CI job remains the publication authority.
+- The final compiled `npm run db:verify` and `npm run test:integration:postgres` both passed against PostgreSQL 17.11. PR #2 then reproduced the result: CI run `31737886048` passed both `verify` and `PostgreSQL 17 integration`.
 
 ## Deferred or blocked
 
@@ -86,4 +86,4 @@ Final narrow remediation verification passed on 2026-08-13.
 
 ## Next recommended task
 
-Publish the architect-approved TASK-004 feature branch, open its pull request, and require the standard plus pinned PostgreSQL 17 CI jobs. After the publication checkpoint is green, implement TASK-041 migration-owner/runtime-role separation before TASK-005 authentication and TASK-006 bootstrap, pairing, and device-token behavior.
+Merge PR #2 when desired, then implement TASK-041 migration-owner/runtime-role separation before TASK-005 authentication and TASK-006 bootstrap, pairing, and device-token behavior. Do not integrate the control API with PostgreSQL as the schema owner.
