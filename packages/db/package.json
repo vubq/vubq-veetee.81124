@@ -5,7 +5,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "default": "./dist/index.js"
     }
   },
@@ -13,6 +13,19 @@
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --passWithNoTests",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "migration:check": "node ../../scripts/postgres-harness.mjs package-check",
+    "migrate": "node ../../scripts/postgres-harness.mjs package-migrate",
+    "rollback": "node ../../scripts/postgres-harness.mjs package-rollback",
+    "verify": "node ../../scripts/postgres-harness.mjs package-verify",
+    "test:integration": "node ../../scripts/postgres-harness.mjs package-integration"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "node-pg-migrate": "^9.0.0",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.21.0"
   }
 }

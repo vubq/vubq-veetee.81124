@@ -48,6 +48,30 @@ uv run --locked --no-sync --project apps/realtime uvicorn app.main:app --reload
 
 The root Python lint, typecheck, and test scripts use `uv run --locked --no-sync`; run `uv sync --project apps/realtime --locked` first to create or refresh the environment from the lockfile. Compose rejects empty datastore passwords, publishes PostgreSQL and Redis only on the loopback interface, and pins the reviewed multi-architecture image indexes: PostgreSQL `17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193` and Redis `7.4-alpine@sha256:e7723ff73d963f5cc6d9c4643ea3d989527a402a319239054e9472a7fb9219a2`. No provider hostname, port, key, or model belongs in source. Configure them through validated provider instances.
 
+## PostgreSQL migration and integration workflow
+
+After starting the local PostgreSQL service, export the same URL configured in `.env` before using database commands. The commands are explicit so the normal offline `npm run check` remains independent of Docker and `DATABASE_URL`:
+
+```bash
+export DATABASE_URL='postgresql://veetee:<local-postgres-password>@localhost:5432/veetee'
+npm run db:check
+npm run db:migrate
+npm run db:verify
+npm run test:integration:postgres
+```
+
+Every root database command builds `@veetee/db` first and executes only compiled `packages/db/dist` JavaScript. `db:check` is offline: it validates the compiled migration discovery package, rejects colocated declaration files, and runs the static schema/reversible-migration contract. `db:migrate` applies pending migrations in one transaction and checks migration order. `db:verify` applies the built migration set and checks the PostgreSQL foundation invariants. `test:integration:postgres` runs only `packages/db/test/postgres.integration.test.ts` against the configured PostgreSQL instance; it never uses a production database.
+
+The equivalent package commands are available for focused work: `npm run migration:check --workspace @veetee/db`, `npm run migrate --workspace @veetee/db`, `npm run rollback --workspace @veetee/db`, `npm run verify --workspace @veetee/db`, and `npm run test:integration --workspace @veetee/db`.
+
+To reverse the most recently applied migration in a disposable local database, take a backup first and then run:
+
+```bash
+npm run db:rollback
+```
+
+Do not use rollback as a substitute for an application-level data recovery plan. Production migration and recovery discipline is documented in [Operations](OPERATIONS.md#postgresql-migrations-backups-and-recovery).
+
 ## Test layers
 
 - Unit: pure policy, parsing, crypto, provider selection, sentence segmentation.

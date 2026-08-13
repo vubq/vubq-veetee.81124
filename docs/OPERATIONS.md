@@ -25,6 +25,16 @@ The owner/operator initially owns the error budget. Provider outage time is labe
 - Provider master key backup through an operator-controlled secret store.
 - Quarterly restore drills.
 
+## PostgreSQL migrations, backups, and recovery
+
+Every migration has an explicit reversible down action and is applied with migration-order validation in a single transaction. Treat migrations as production changes: review both directions, test the exact release on an isolated PostgreSQL 17 database, and record the migration identifiers deployed.
+
+Before a production migration, take and verify a restorable, encrypted PostgreSQL backup. Keep the backup location, restore procedure, migration identifiers, operator, and UTC timestamp in the change record. A successful backup job alone is not sufficient; restore drills validate recovery.
+
+For an additive or otherwise safely reversible migration, the operator may roll back only the most recently applied migration after stopping writers and confirming the down action preserves required data. For destructive or data-transforming changes, do not rely on schema rollback: restore the verified backup or execute the documented forward repair plan. Never run development rollback commands against production without the approved recovery decision and a verified backup.
+
+CI first validates compiled migration discovery offline, then runs the frozen PostgreSQL foundation verifier and integration contract on an isolated pinned PostgreSQL 17 service. The live job uses only compiled migration artifacts and rejects declaration files that could otherwise be loaded as migrations. Its disposable credentials are scoped to that job and are not deployment credentials.
+
 ## Key rotation
 
 - Rotate provider keys without exposing old values.
