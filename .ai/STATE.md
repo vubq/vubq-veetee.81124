@@ -4,11 +4,11 @@ Updated: 2026-08-13
 
 ## Current objective
 
-Publish the verified repository foundation and architect-approved TASK-003 protocol baseline without including references, secrets, local settings, or generated artifacts.
+Design TASK-004 PostgreSQL schemas and reversible migrations for the data and security foundations required by bootstrap, pairing, device identity, providers, pipelines, sessions, MCP, audit, and outbox workflows.
 
 ## Current phase
 
-TASK-003 received final architect approval on 2026-08-13 after literal pinned-wire, clean-source CLI, framing, Opus, state-machine, and full-repository verification. Initial baseline publication is active.
+The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc`; `origin/main` matched the local commit, CI run `31696474159` succeeded, and Dependency Graph run `31696474740` succeeded. Publication is complete. A small CI-maintenance checkpoint is replacing deprecated Node.js 20 action runtimes before TASK-004 implementation begins.
 
 ## Completed task scope
 
@@ -51,6 +51,7 @@ Final narrow remediation verification passed on 2026-08-13.
 - Focused RED evidence was recorded before implementation; focused GREEN suites and full `npm run check` passed afterward.
 - Final hygiene passed: `git diff --check`, no-index whitespace checks for the final-remediation files, runtime-term/link inspection, and both pinned-reference worktree status checks were clean.
 - Final independent architect re-review approved TASK-003 for inclusion in the initial Git baseline. Historical 21/6/3/4 TASK-003 count claims are superseded and must not be used as current evidence.
+- Baseline commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc` was pushed to `origin/main`; GitHub CI run `31696474159` and Dependency Graph run `31696474740` both completed successfully.
 
 ## Deferred or blocked
 
@@ -59,7 +60,8 @@ Final narrow remediation verification passed on 2026-08-13.
 - MCP timeout execution is deferred to TASK-009.
 - Restricted model/media assets are not approved for redistribution.
 - Provider credentials must remain outside Git.
+- The baseline CI emitted a non-blocking deprecated Node.js 20 action-runtime warning. A maintenance branch replaces all four action pins with immutable Node.js 24 releases; local repository checks, Compose validation, and pin verification passed, with remote CI pending.
 
 ## Next recommended task
 
-Publish the audited initial baseline to the verified GitHub remote, confirm remote CI, then begin TASK-004 data and security foundations from the approved contracts.
+Merge the CI action-runtime maintenance checkpoint after remote verification, then execute TASK-004 database schema and migration planning before implementing TASK-006 bootstrap, pairing, and device-token behavior.
