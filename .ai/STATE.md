@@ -1,14 +1,14 @@
 # Veetee State
 
-Updated: 2026-08-13
+Updated: 2026-08-14
 
 ## Current objective
 
-Design TASK-004 PostgreSQL schemas and reversible migrations for the data and security foundations required by bootstrap, pairing, device identity, providers, pipelines, sessions, MCP, audit, and outbox workflows.
+Land the verified TASK-004 PostgreSQL foundation and implement TASK-041 migration-owner/runtime-role separation before any control-API database integration.
 
 ## Current phase
 
-The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc`; `origin/main` matched the local commit, CI run `31696474159` succeeded, and Dependency Graph run `31696474740` succeeded. Publication is complete. A small CI-maintenance checkpoint is replacing deprecated Node.js 20 action runtimes before TASK-004 implementation begins.
+The architect-approved TASK-003 baseline and CI action-runtime maintenance are merged on `main`. TASK-004 is committed as `dbd9d74ea5fb4a9f8775db62b1dcb67c8c828d24`, pushed on `feat/task-004-database-foundation`, and published as PR #2. Both required CI jobs—`verify` and `PostgreSQL 17 integration`—passed. The next implementation gate is TASK-041 migration-owner/runtime-role separation; authentication and bootstrap database integration remain blocked until it is complete.
 
 ## Completed task scope
 
@@ -18,6 +18,7 @@ The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `
 - Speech-turn abort keeps independent pending MCP requests. A matching late client result or error remains correlated; unmatched and wrong-result-family responses are rejected. Speech/audio restrictions remain in force until `tts/stop` and a later `listen/start`.
 - The npm bin builds on demand from source and is covered in a source-only workspace after `npm ci --ignore-scripts` followed by `npm exec -- veetee-device-simulator`.
 - Python fixture parity remains one focused test; the full realtime Python suite remains two tests.
+- TASK-004 RED contract evidence: `NO_COLOR=1 npm test --workspace @veetee/db -- --reporter=verbose` fails because the planned `src/schema.js` module is absent; the PostgreSQL integration case is explicitly skipped without `DATABASE_URL`. Typecheck reports the same intentionally missing schema, migration-discovery, and foundation-verifier modules.
 
 ## Important decisions and boundaries
 
@@ -53,6 +54,25 @@ Final narrow remediation verification passed on 2026-08-13.
 - Final independent architect re-review approved TASK-003 for inclusion in the initial Git baseline. Historical 21/6/3/4 TASK-003 count claims are superseded and must not be used as current evidence.
 - Baseline commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc` was pushed to `origin/main`; GitHub CI run `31696474159` and Dependency Graph run `31696474740` both completed successfully.
 
+## TASK-004 review status
+
+- Initial schema/migration implementation turned the focused RED contract tests green, but an independent architect review returned `NEEDS_FIX`.
+- The first remediation pass added six ordered migrations, built-artifact checks, isolated-schema verification, canonical device identity, provider-role foreign keys, MCP approval state, and separate immutable outbox events from mutable deliveries. Offline lint, typecheck, build, package tests, `npm run db:check`, and repository/harness guards pass; the live PostgreSQL test remains skipped without `DATABASE_URL`.
+- A focused architect re-review still returned `NEEDS_FIX`. Release blockers now tracked as TASK-036 through TASK-040 are: expired pairing refresh plus atomic concurrent claim; MCP session/device/tool identity and policy-derived approval; complete provider credential envelopes plus external signing-key handles and immutable published revisions; staged firmware/ticket safety and authoritative conversation-session retention metadata; and ownership-aware database client construction.
+- The system Docker daemon remains absent and rootless Docker is blocked by Ubuntu AppArmor unprivileged-user-namespace policy. To obtain live evidence without changing the host, PostgreSQL 16.14 Ubuntu packages and PostgreSQL 17.11 PGDG packages were downloaded and extracted only under `$CLAUDE_JOB_DIR/tmp`; temporary unprivileged clusters ran the built verifier and dedicated integration test successfully for the first remediation pass. These results must be repeated after TASK-036 through TASK-039 merge; CI remains the publication authority.
+- TASK-036 through TASK-039 remediation is implemented: pairing refresh/claim/consume is serialized and claimant-bound; MCP calls are tied to immutable revision policy and composite session/device/tool identity; signing-key and provider-credential identity is immutable with monotonic lifecycle; firmware publication, rollout, and digest-authenticated ticket behavior is hardened; conversation sessions own retention and turn-abort metadata; and the database client respects caller-owned pools.
+- Drizzle declarations and schema contract tests are reconciled with all six migrations. Procedural triggers/functions remain authoritative in the migration SQL and are covered by focused migration contracts and the live verifier.
+- TASK-040 verification is green locally: `npm run db:check`, all 33 database tests against temporary PostgreSQL 17.11, compiled `npm run db:verify`, dedicated `npm run test:integration:postgres`, full `npm run check`, and `git diff --check` all pass.
+- The final architect review found one Drizzle/migration mismatch: `mcp_calls.attempt_count` existed only in the Drizzle declaration. The redundant declaration, checks, and contract expectation were removed; `attempt` remains authoritative. The focused re-review then returned `VERDICT: APPROVE` with no remaining release blockers.
+- TASK-004 has not been applied to any known shared database. Commit `dbd9d74ea5fb4a9f8775db62b1dcb67c8c828d24` was pushed and published as PR #2; both standard verification and pinned PostgreSQL 17 integration CI passed.
+
+## TASK-004 live verification evidence
+
+- Temporary unprivileged PostgreSQL 16.14 and PostgreSQL 17.11 clusters were initialized under `$CLAUDE_JOB_DIR/tmp` and exposed only through job-local Unix sockets plus local ports `55432` and `55433`.
+- The first remediation pass passed `db:verify` and the dedicated integration test on both PostgreSQL 16.14 and 17.11.
+- After TASK-036 through TASK-040 integration and the final Drizzle reconciliation, PostgreSQL 17.11 passed all 33 database tests, including concurrent pairing/MCP decisions, digest-only firmware tickets, immutable credential/key/revision records, full migration rollback, schema cleanup, and reapply.
+- The final compiled `npm run db:verify` and `npm run test:integration:postgres` both passed against PostgreSQL 17.11. PR #2 then reproduced the result: CI run `31737886048` passed both `verify` and `PostgreSQL 17 integration`.
+
 ## Deferred or blocked
 
 - No hardware device is attached; simulator verification is not hardware acceptance.
@@ -60,8 +80,10 @@ Final narrow remediation verification passed on 2026-08-13.
 - MCP timeout execution is deferred to TASK-009.
 - Restricted model/media assets are not approved for redistribution.
 - Provider credentials must remain outside Git.
-- The baseline CI emitted a non-blocking deprecated Node.js 20 action-runtime warning. A maintenance branch replaces all four action pins with immutable Node.js 24 releases; local repository checks, Compose validation, and pin verification passed, with remote CI pending.
+- The baseline Node.js 20 action-runtime warning was resolved by merge commit `10dd483d6cac91e74fde784924f31143d15c6c5f`; post-merge CI run `31697317751` passed without that warning.
+- Docker remains unavailable locally, but a job-local unprivileged PostgreSQL 17.11 cluster provides current live evidence. Feature-branch CI must still reproduce it on the pinned PostgreSQL 17 image.
+- Full migration-owner/runtime-role separation is tracked as TASK-041 and blocks control-API database integration; production must not run the application as the schema owner.
 
 ## Next recommended task
 
-Merge the CI action-runtime maintenance checkpoint after remote verification, then execute TASK-004 database schema and migration planning before implementing TASK-006 bootstrap, pairing, and device-token behavior.
+Merge PR #2 when desired, then implement TASK-041 migration-owner/runtime-role separation before TASK-005 authentication and TASK-006 bootstrap, pairing, and device-token behavior. Do not integrate the control API with PostgreSQL as the schema owner.
