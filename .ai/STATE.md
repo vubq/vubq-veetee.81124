@@ -4,11 +4,11 @@ Updated: 2026-08-13
 
 ## Current objective
 
-Design TASK-004 PostgreSQL schemas and reversible migrations for the data and security foundations required by bootstrap, pairing, device identity, providers, pipelines, sessions, MCP, audit, and outbox workflows.
+Implement TASK-004 PostgreSQL schemas and reversible migrations for the data and security foundations required by bootstrap, pairing, device identity, providers, pipelines, sessions, MCP, audit, and outbox workflows.
 
 ## Current phase
 
-The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc`; `origin/main` matched the local commit, CI run `31696474159` succeeded, and Dependency Graph run `31696474740` succeeded. Publication is complete. A small CI-maintenance checkpoint is replacing deprecated Node.js 20 action runtimes before TASK-004 implementation begins.
+The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `09af09275dd8a21dac19fd55d3bf98427f16b6bc`; `origin/main` matched the local commit, CI run `31696474159` succeeded, and Dependency Graph run `31696474740` succeeded. The CI action-runtime maintenance checkpoint was merged as `10dd483d6cac91e74fde784924f31143d15c6c5f` and its post-merge CI run `31697317751` succeeded without the deprecated Node.js 20 runtime warning. TASK-004 implementation is now active on `feat/task-004-database-foundation`.
 
 ## Completed task scope
 
@@ -18,6 +18,7 @@ The architect-approved TASK-003 baseline was published on 2026-08-13 as commit `
 - Speech-turn abort keeps independent pending MCP requests. A matching late client result or error remains correlated; unmatched and wrong-result-family responses are rejected. Speech/audio restrictions remain in force until `tts/stop` and a later `listen/start`.
 - The npm bin builds on demand from source and is covered in a source-only workspace after `npm ci --ignore-scripts` followed by `npm exec -- veetee-device-simulator`.
 - Python fixture parity remains one focused test; the full realtime Python suite remains two tests.
+- TASK-004 RED contract evidence: `NO_COLOR=1 npm test --workspace @veetee/db -- --reporter=verbose` fails because the planned `src/schema.js` module is absent; the PostgreSQL integration case is explicitly skipped without `DATABASE_URL`. Typecheck reports the same intentionally missing schema, migration-discovery, and foundation-verifier modules.
 
 ## Important decisions and boundaries
 
