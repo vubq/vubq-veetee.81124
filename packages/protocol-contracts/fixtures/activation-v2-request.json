@@ -1,0 +1,14 @@
+{
+  "headers": {
+    "Activation-Version": "2",
+    "Device-Id": "66:77:88:99:aa:bb",
+    "Client-Id": "00000000-0000-4000-8000-000000000002",
+    "Serial-Number": "SN-VEETEE-0002"
+  },
+  "body": {
+    "algorithm": "hmac-sha256",
+    "serial_number": "SN-VEETEE-0002",
+    "challenge": "opaque-challenge-fixture",
+    "hmac": "4d4d2f6eec66b9e06acaa3b49470a7713ac18fead421940b2d97bfe0ef6e0be5"
+  }
+}

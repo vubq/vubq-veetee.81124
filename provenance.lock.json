@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "inspectedAt": "2026-08-13",
+  "references": [
+    {
+      "id": "firmware-reference",
+      "remote": "https://github.com/78/xiaozhi-esp32.git",
+      "localPath": "references/xiaozhi-esp32",
+      "commit": "631add2a327ea2d49fec16e4d4534b8345bb40c1",
+      "tree": "f045b616a42ae7360ec2e329016a5661175869e4",
+      "license": "MIT",
+      "allowedUse": "Behavioral and protocol study; separately review dependency and binary-asset notices before redistribution.",
+      "copyPolicy": "Do not copy audio, imagery, fonts, emoji, model data, or generated asset bundles without provenance review."
+    },
+    {
+      "id": "server-reference",
+      "remote": "https://github.com/xinnan-tech/xiaozhi-esp32-server.git",
+      "localPath": "references/xiaozhi-esp32-server",
+      "commit": "545979873b6fe6ab52c86122fe6a0aef621b39ee",
+      "tree": "c31ad10650d68074df3e845c3f24fb95e691de44",
+      "license": "MIT",
+      "allowedUse": "Behavioral, protocol, architecture, and provider-management study.",
+      "copyPolicy": "Do not copy bundled Live2D runtimes/models, media, pretrained models, or unattributed minified assets."
+    }
+  ],
+  "runtimeNamingPolicy": "New runtime code, routes, packages, UI copy, and log tags use Veetee naming only. Upstream names are permitted solely in legal/provenance records."
+}

@@ -1,0 +1,25 @@
+{
+  "type": "mcp",
+  "session_id": "session-fixture-001",
+  "payload": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "tools": [
+        {
+          "name": "self.user.settings",
+          "description": "Open user settings.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "audience": [
+              "user"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

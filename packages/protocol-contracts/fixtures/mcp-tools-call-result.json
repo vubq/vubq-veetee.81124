@@ -1,0 +1,17 @@
+{
+  "type": "mcp",
+  "session_id": "session-fixture-001",
+  "payload": {
+    "jsonrpc": "2.0",
+    "id": 3,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "idle"
+        }
+      ],
+      "isError": false
+    }
+  }
+}

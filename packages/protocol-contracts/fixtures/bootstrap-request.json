@@ -1,0 +1,42 @@
+{
+  "headers": {
+    "Activation-Version": "1",
+    "Device-Id": "00:11:22:33:44:55",
+    "Client-Id": "00000000-0000-4000-8000-000000000001",
+    "User-Agent": "veetee-device-simulator/0.1.0",
+    "Accept-Language": "vi-VN",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "version": 2,
+    "language": "vi-VN",
+    "flash_size": 4194304,
+    "minimum_free_heap_size": "123456",
+    "mac_address": "00:11:22:33:44:55",
+    "uuid": "00000000-0000-4000-8000-000000000001",
+    "chip_model_name": "simulator-s3",
+    "chip_info": {
+      "model": 9,
+      "cores": 2,
+      "revision": 0,
+      "features": 0
+    },
+    "application": {
+      "name": "veetee-device-simulator",
+      "version": "0.1.0",
+      "compile_time": "2026-08-13T00:00:00Z",
+      "idf_version": "5.5.4",
+      "elf_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "partition_table": [],
+    "ota": {
+      "label": "ota_0"
+    },
+    "board": {
+      "type": "veetee-simulator",
+      "name": "Veetee Simulator",
+      "manufacturer": "Veetee",
+      "mac": "00:11:22:33:44:55"
+    }
+  }
+}

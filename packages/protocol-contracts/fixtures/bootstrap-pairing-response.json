@@ -1,0 +1,7 @@
+{
+  "activation": {
+    "message": "Mã ghép nối Veetee: 123456",
+    "code": "123456",
+    "challenge": "opaque-challenge-fixture"
+  }
+}

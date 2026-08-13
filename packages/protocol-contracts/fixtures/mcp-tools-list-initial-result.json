@@ -1,0 +1,21 @@
+{
+  "type": "mcp",
+  "session_id": "session-fixture-001",
+  "payload": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "tools": [
+        {
+          "name": "self.get_device_status",
+          "description": "Return current device status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      ],
+      "nextCursor": "self.audio_speaker.set_volume"
+    }
+  }
+}

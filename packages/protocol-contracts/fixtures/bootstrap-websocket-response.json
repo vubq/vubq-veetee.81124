@@ -1,0 +1,10 @@
+{
+  "server_time": {
+    "timestamp": 1735689600000,
+    "timezone_offset": 420
+  },
+  "websocket": {
+    "url": "wss://simulator.invalid/ws/v1",
+    "token": "fixture-device-token"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "type": "abort",
+  "reason": "wake_word_detected",
+  "session_id": "session-fixture-001"
+}

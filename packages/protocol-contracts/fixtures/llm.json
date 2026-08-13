@@ -1,0 +1,7 @@
+{
+  "type": "llm",
+  "session_id": "session-fixture-001",
+  "text": "Chào bạn!",
+  "emotion": "happy",
+  "is_final": true
+}

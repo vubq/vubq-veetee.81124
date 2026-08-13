@@ -1,0 +1,19 @@
+{
+  "name": "@veetee/device-simulator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@veetee/protocol-contracts": "0.1.0"
+  },
+  "bin": {
+    "veetee-device-simulator": "bin/veetee-device-simulator.mjs"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "npm run build && vitest run --passWithNoTests",
+    "build": "tsc -b tsconfig.build.json"
+  }
+}

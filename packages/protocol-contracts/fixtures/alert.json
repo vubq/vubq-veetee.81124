@@ -1,0 +1,7 @@
+{
+  "type": "alert",
+  "session_id": "session-fixture-001",
+  "status": "warning",
+  "message": "Pin yếu",
+  "emotion": "concerned"
+}

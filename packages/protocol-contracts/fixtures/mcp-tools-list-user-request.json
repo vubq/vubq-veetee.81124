@@ -1,0 +1,11 @@
+{
+  "type": "mcp",
+  "payload": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list",
+    "params": {
+      "withUserTools": true
+    }
+  }
+}
